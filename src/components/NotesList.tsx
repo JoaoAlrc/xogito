@@ -6,6 +6,8 @@ import Toast from 'react-native-toast-message';
 import ListItemNote from './ListItemNote';
 import GridItemNote from './GridItemNote';
 import Switch from './Switch';
+import SearchBar from './SearchBar';
+import TagsList from './TagsList';
 
 type Item = {
   id: number | undefined;
@@ -17,26 +19,36 @@ type Item = {
 };
 
 type ItemProps = {
-  data: Item[];
+  dataNotes: Item[];
+  dataTags: string[];
   tag: string;
   filter: string;
+  submitNote: (item: {search: string}) => Promise<void>;
+  onPressTag: (item: string) => Promise<void>;
 };
 
 const switchOptions = ['Grid', 'List'];
 
-export default function NotesList({data, tag, filter}: ItemProps) {
+export default function NotesList({
+  dataNotes,
+  dataTags,
+  tag,
+  filter,
+  onPressTag,
+  submitNote,
+}: ItemProps) {
   const [switchValue, setSwitchValue] = useState<string>('Grid');
-  const [filteredData, setFilteredData] = useState<ItemProps>(data);
+  const [filteredData, setFilteredData] = useState<ItemProps>(dataNotes);
   const queryClient = useQueryClient();
   const removeNote = useRemoveNote();
 
   useEffect(() => {
     updateData();
-  }, [tag, filter, data]);
+  }, [tag, filter, dataNotes]);
 
   const updateData = () => {
     if (tag === 'All') {
-      let updatedData = data;
+      let updatedData = dataNotes;
       if (filter) {
         updatedData = updatedData?.filter(item => {
           if (item.title.includes(filter)) {
@@ -48,7 +60,7 @@ export default function NotesList({data, tag, filter}: ItemProps) {
       }
       setFilteredData(updatedData);
     } else {
-      let updatedData = data?.filter(item => item.tag === tag);
+      let updatedData = dataNotes?.filter(item => item.tag === tag);
       if (filter) {
         updatedData = updatedData?.filter(item => {
           if (item.title.includes(filter)) {
@@ -64,7 +76,7 @@ export default function NotesList({data, tag, filter}: ItemProps) {
 
   const deleteItem = async (id: number) => {
     removeNote.mutate(
-      {id, notes: data},
+      {id, notes: dataNotes},
       {
         onSuccess: response => {
           Toast.show({
@@ -83,11 +95,17 @@ export default function NotesList({data, tag, filter}: ItemProps) {
 
   return (
     <View style={styles.container}>
-      <Switch
-        options={switchOptions}
-        currentValue={switchValue}
-        onPress={setSwitchValue}
-      />
+      {!!filteredData?.length && (
+        <>
+          <SearchBar submit={submitNote} />
+          <TagsList data={dataTags} onPress={onPressTag} value={tag} />
+          <Switch
+            options={switchOptions}
+            currentValue={switchValue}
+            onPress={setSwitchValue}
+          />
+        </>
+      )}
       {!filteredData?.length ? (
         <View style={styles.ph16}>
           <Text style={styles.textNoData}>

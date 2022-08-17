@@ -4,8 +4,6 @@ import {styles} from './styles';
 import Header from './components/Header';
 import {useGetNotes} from './services/notes';
 import {useCreateTag, useGetTags} from './services/tags';
-import TagsList from './components/TagsList';
-import SearchBar from './components/SearchBar';
 import {QueryClient} from 'react-query';
 import NotesList from './components/NotesList';
 
@@ -49,9 +47,14 @@ export default function Note() {
   return (
     <ScrollView style={styles.container}>
       <Header notesData={getNotes.data} tagData={getTags.data} />
-      <SearchBar submit={searchNote} />
-      <TagsList data={getTags.data} onPress={onPressTag} value={tagOption} />
-      <NotesList data={getNotes.data} tag={tagOption} filter={filterOption} />
+      <NotesList
+        dataNotes={getNotes.data}
+        dataTags={getTags.data}
+        tag={tagOption}
+        filter={filterOption}
+        submitNote={searchNote}
+        onPressTag={onPressTag}
+      />
     </ScrollView>
   );
 }
