@@ -145,6 +145,7 @@ const styles = StyleSheet.create({
   },
   textNoData: {
     textAlign: 'center',
+    color: '#FFFFFF',
   },
   containerItem: {
     justifyContent: 'space-between',
