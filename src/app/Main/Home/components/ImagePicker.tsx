@@ -9,6 +9,7 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import {Control, RegisterOptions, useController} from 'react-hook-form';
+import colors from '../../../../styles/colors';
 
 type Props = {
   name: string;
@@ -116,7 +117,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   body: {
-    backgroundColor: '#0E5573',
+    backgroundColor: colors.SECONDARY,
     justifyContent: 'center',
     borderColor: '#FFFFFF',
     borderWidth: 0.5,

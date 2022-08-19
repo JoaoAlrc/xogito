@@ -1,14 +1,15 @@
 import React, {useState} from 'react';
 import {
   View,
-  ScrollView,
   StyleSheet,
   Text,
   Image,
   Pressable,
   ActivityIndicator,
 } from 'react-native';
-import DeleteModal from './DeleteModal';
+import moment from 'moment';
+import DeleteModal from '../../../../components/DeleteModal';
+import colors from '../../../../styles/colors';
 
 type Item = {
   id: number | undefined;
@@ -48,10 +49,26 @@ export default function ListItemNote({data, isLoading, deleteItem}: Props) {
                   <Text style={styles.textNoImage}>No image available</Text>
                 </View>
               )}
+              <View style={styles.tag}>
+                <Text numberOfLines={1} style={styles.tagText}>
+                  {item.tag}
+                </Text>
+              </View>
               <View style={styles.spaceBetween}>
-                <Text>Title: {item.title}</Text>
-                <Text>Tag: {item.tag}</Text>
-                <Text>Text: {item.text}</Text>
+                <Text numberOfLines={1} style={styles.title}>
+                  {item.title}
+                </Text>
+
+                <Text numberOfLines={1} style={styles.textImages}>
+                  {moment(item.date_of_creation).format('MM/DD/YYYY')}
+                </Text>
+                <Text numberOfLines={1} style={styles.textImages}>
+                  {item.images.length}{' '}
+                  {item.images.length === 1 ? 'image' : 'images'}
+                </Text>
+                <Text numberOfLines={2} style={styles.text}>
+                  {item.text}
+                </Text>
               </View>
             </View>
             <Pressable
@@ -75,6 +92,29 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     flexDirection: 'row',
     marginBottom: 24,
+  },
+  tag: {
+    position: 'absolute',
+    top: 4,
+    left: 20,
+    borderRadius: 24,
+    backgroundColor: colors.BUTTON,
+    padding: 8,
+  },
+  title: {
+    fontSize: 16,
+    color: colors.PRIMARY,
+  },
+  tagText: {
+    fontSize: 12,
+    color: colors.WHITE,
+  },
+  textImages: {
+    fontSize: 12,
+  },
+  text: {
+    fontSize: 12,
+    marginBottom: 8,
   },
   button: {
     alignSelf: 'center',

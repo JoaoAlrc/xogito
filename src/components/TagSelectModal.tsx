@@ -12,9 +12,10 @@ import {
 import Toast from 'react-native-toast-message';
 import Input from './forms/Input';
 import Pressable from 'react-native/Libraries/Components/Pressable/Pressable';
-import {useCreateTag, useRemoveTag} from '../services/tags';
+import {useCreateTag, useGetTags, useRemoveTag} from '../services/api/tags';
 import {useQueryClient} from 'react-query';
 import DeleteModal from './DeleteModal';
+import colors from '../styles/colors';
 
 const required = {
   required: {value: true, message: 'This value is required.'},
@@ -27,7 +28,7 @@ const max100 = {
   },
 };
 
-function TagSelectModal({placeholder, name, control, rules, data}) {
+function TagSelectModal({placeholder, name, control, rules}) {
   const [modalVisible, setModalVisible] = useState(null);
   const [modal, setModal] = useState(false);
   const {
@@ -39,6 +40,7 @@ function TagSelectModal({placeholder, name, control, rules, data}) {
       tag: '',
     },
   });
+  const {data} = useGetTags();
   const queryClient = useQueryClient();
   const removeTag = useRemoveTag();
   const createTag = useCreateTag();
@@ -246,7 +248,7 @@ const styles = StyleSheet.create({
   },
   placeholder: {
     fontSize: 14,
-    color: 'grey',
+    color: colors.GRAY,
     flex: 1,
   },
   textValue: {
@@ -267,7 +269,7 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   content: {
-    backgroundColor: '#0E5573',
+    backgroundColor: colors.SECONDARY,
     flexDirection: 'column',
     borderRadius: 20,
   },

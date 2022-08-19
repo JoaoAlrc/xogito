@@ -1,6 +1,7 @@
 import React from 'react';
 import {Control, RegisterOptions, useController} from 'react-hook-form';
 import {StyleSheet, Text, View, TextInput} from 'react-native';
+import colors from '../../styles/colors';
 
 type InputProps = {
   name: string;
@@ -32,7 +33,7 @@ const Input = ({
     error && error.message ? (
       <Text
         style={{
-          color: error?.message ? 'red' : '#0B1322',
+          color: error?.message ? 'red' : colors.DARK,
           ...styles.helperText,
         }}>
         {error?.message}
@@ -47,11 +48,11 @@ const Input = ({
         onChangeText={onChange}
         onBlur={onBlur}
         multiline={multiline}
-        placeholderTextColor="grey"
+        placeholderTextColor={colors.GRAY}
         style={[
           styles.inputStyles,
           {
-            borderColor: error && error.message ? 'red' : '#FFFFFF',
+            borderColor: error && error.message ? 'red' : colors.WHITE,
           },
         ]}
         {...props}
@@ -73,7 +74,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     marginBottom: 8,
     width: '100%',
-    color: '#FFFFFF',
+    color: colors.WHITE,
   },
 });
 

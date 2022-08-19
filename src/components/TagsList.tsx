@@ -1,14 +1,15 @@
 import React from 'react';
 import {View, ScrollView, StyleSheet} from 'react-native';
+import {useGetTags} from '../services/api/tags';
 import Tag from './Tag';
 
 type Props = {
-  data: string[];
   value: string;
   onPress: (item: string) => Promise<void>;
 };
 
-export default function TagsList({data, value, onPress}: Props) {
+export default function TagsList({value, onPress}: Props) {
+  const {data} = useGetTags();
   return (
     <View style={styles.container}>
       <ScrollView showsHorizontalScrollIndicator={false} horizontal>

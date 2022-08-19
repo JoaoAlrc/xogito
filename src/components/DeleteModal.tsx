@@ -8,6 +8,7 @@ import {
   View,
   Dimensions,
 } from 'react-native';
+import colors from '../styles/colors';
 const {width} = Dimensions.get('screen');
 
 type Props = {
@@ -81,7 +82,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   textButtonModal: {
-    color: '#FFFFFF',
+    color: colors.WHITE,
     fontWeight: 'bold',
   },
   buttonModal: {
@@ -93,10 +94,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   bgGrey: {
-    backgroundColor: 'grey',
+    backgroundColor: colors.GRAY,
   },
   bgRed: {
-    backgroundColor: 'red',
+    backgroundColor: colors.RED,
   },
   tag: {
     alignSelf: 'flex-start',

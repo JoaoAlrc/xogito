@@ -10,9 +10,9 @@ export const REMOVE_NOTE_KEY = 'delete-note';
 // React Query Hook to get notes
 export const useGetNotes = () => {
   const queryResult = useQuery(GET_NOTE_KEY, async () => {
-    const response = await AsyncStorage.getItem('notes');
+    const response = await AsyncStorage.getItem('user-logged');
 
-    return JSON.parse(response);
+    return JSON.parse(response).notes;
   });
 
   return queryResult;
@@ -22,7 +22,6 @@ export const useGetNotes = () => {
 
 type CreateNoteProps = {
   note: Note;
-  notes: Note[];
 };
 type Note = {
   id: number | undefined;
@@ -40,11 +39,13 @@ export const useCreateNote = (): UseMutationResult<
   CreateNoteProps
 > => {
   const mutationResult = useMutation(
-    async ({note, notes}: CreateNoteProps) => {
-      const response = !!notes ? [note, ...notes] : [note];
-      await AsyncStorage.setItem('notes', JSON.stringify(response));
+    async ({note}: CreateNoteProps) => {
+      let response = JSON.parse(await AsyncStorage.getItem('user-logged'));
+      response.notes = [note, ...response.notes];
 
-      return response;
+      await AsyncStorage.setItem('user-logged', JSON.stringify(response));
+
+      return response.notes;
     },
     {mutationKey: CREATE_NOTE_KEY},
   );
@@ -56,7 +57,6 @@ export const useCreateNote = (): UseMutationResult<
 
 type RemoveNoteProps = {
   id: number;
-  notes: Note[];
 };
 
 // React Mutation Hook to Remove the Note
@@ -66,11 +66,14 @@ export const useRemoveNote = (): UseMutationResult<
   RemoveNoteProps
 > => {
   const mutationResult = useMutation(
-    async ({id, notes}: RemoveNoteProps) => {
-      const response = notes.filter(i => i.id !== id);
-      await AsyncStorage.setItem('notes', JSON.stringify(response));
+    async ({id}: RemoveNoteProps) => {
+      let userParsed = JSON.parse(await AsyncStorage.getItem('user-logged'));
+      const filteredNotes = userParsed.notes.filter(i => i.id !== id);
+      userParsed.notes = filteredNotes;
 
-      return response;
+      await AsyncStorage.setItem('user-logged', JSON.stringify(userParsed));
+
+      return userParsed;
     },
     {mutationKey: REMOVE_NOTE_KEY},
   );

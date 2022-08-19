@@ -1,6 +1,7 @@
 import React from 'react';
 import {useForm} from 'react-hook-form';
 import {View, Pressable, Text, StyleSheet} from 'react-native';
+import colors from '../styles/colors';
 import Input from './forms/Input';
 
 type Props = {
@@ -38,11 +39,11 @@ const styles = StyleSheet.create({
     padding: 16,
   },
   textButton: {
-    color: '#FFFFFF',
+    color: colors.WHITE,
     fontSize: 12,
   },
   button: {
-    backgroundColor: '#0B1322',
+    backgroundColor: colors.DARK,
     borderRadius: 24,
     paddingHorizontal: 8,
     alignItems: 'center',

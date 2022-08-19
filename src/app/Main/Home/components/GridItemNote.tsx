@@ -9,7 +9,9 @@ import {
   SafeAreaView,
   Dimensions,
 } from 'react-native';
-import DeleteModal from './DeleteModal';
+import moment from 'moment';
+import DeleteModal from '../../../../components/DeleteModal';
+import colors from '../../../../styles/colors';
 
 const {width} = Dimensions.get('screen');
 
@@ -30,6 +32,7 @@ type Props = {
 
 export default function GridItemNote({data, isLoading, deleteItem}: Props) {
   const [modalVisible, setModalVisible] = useState(0);
+
   return (
     <SafeAreaView style={styles.container}>
       <DeleteModal
@@ -41,7 +44,7 @@ export default function GridItemNote({data, isLoading, deleteItem}: Props) {
         <ActivityIndicator />
       ) : (
         <View style={styles.viewItems}>
-          {data.map((item, idx) => (
+          {data?.map((item, idx) => (
             <View key={idx} style={styles.containerItem}>
               <View style={styles.spaceBetween}>
                 {item.images[0] ? (
@@ -51,13 +54,27 @@ export default function GridItemNote({data, isLoading, deleteItem}: Props) {
                     <Text style={styles.textNoImage}>No image available</Text>
                   </View>
                 )}
+                <View style={styles.tag}>
+                  <Text numberOfLines={1} style={styles.tagText}>
+                    {item.tag}
+                  </Text>
+                </View>
               </View>
-              <View style={styles.footer}>
+              <View style={[styles.footer, styles.spaceBetween]}>
                 <View style={styles.spaceBetween}>
-                  <Text style={styles.title}>Title: {item.title}</Text>
-                  <Text>Tag: {item.tag}</Text>
-                  <Text>Number of images: {item.images.length}</Text>
-                  <Text>Text: {item.text}</Text>
+                  <Text numberOfLines={1} style={styles.title}>
+                    {item.title}
+                  </Text>
+                  <Text numberOfLines={1} style={styles.textImages}>
+                    {moment(item.date_of_creation).format('MM/DD/YYYY')}
+                  </Text>
+                  <Text numberOfLines={1} style={styles.textImages}>
+                    {item.images.length}{' '}
+                    {item.images.length === 1 ? 'image' : 'images'}
+                  </Text>
+                  <Text numberOfLines={1} style={styles.text}>
+                    {item.text}
+                  </Text>
                 </View>
                 <Pressable
                   style={styles.button}
@@ -78,20 +95,41 @@ const styles = StyleSheet.create({
     flex: 1,
     marginVertical: 24,
   },
+  tag: {
+    position: 'absolute',
+    top: 8,
+    right: 8,
+    borderRadius: 24,
+    backgroundColor: colors.BUTTON,
+    padding: 8,
+  },
+  title: {
+    fontSize: 16,
+    color: colors.SECONDARY,
+  },
+  tagText: {
+    fontSize: 12,
+    color: colors.WHITE,
+  },
+  textImages: {
+    fontSize: 12,
+  },
+  text: {
+    fontSize: 12,
+    marginBottom: 8,
+  },
   viewItems: {
     flexDirection: 'row',
     flexWrap: 'wrap',
   },
   footer: {
     padding: 8,
-    height: 150,
-    justifyContent: 'space-between',
   },
   containerItem: {
     justifyContent: 'space-between',
     width: width / 2 - 32,
     backgroundColor: '#E7E7E7',
-    borderRadius: 4,
+    borderRadius: 24,
     marginBottom: 24,
     marginHorizontal: 16,
   },
@@ -116,12 +154,12 @@ const styles = StyleSheet.create({
     width: width / 2 - 32,
     resizeMode: 'cover',
     height: width / 2 - 32,
-    borderRadius: 4,
+    borderRadius: 24,
   },
   noImage: {
     width: width / 2 - 32,
     height: width / 2 - 32,
-    borderRadius: 4,
+    borderRadius: 24,
     justifyContent: 'center',
     alignItems: 'center',
     borderWidth: 0.5,

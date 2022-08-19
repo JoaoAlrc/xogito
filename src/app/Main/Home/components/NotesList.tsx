@@ -1,13 +1,14 @@
 import React, {useState, useEffect} from 'react';
-import {View, StyleSheet, Text} from 'react-native';
+import {View, StyleSheet, Text, ActivityIndicator} from 'react-native';
 import {useQueryClient} from 'react-query';
-import {useRemoveNote} from '../services/notes';
+import {useGetNotes, useRemoveNote} from '../../../../services/api/notes';
 import Toast from 'react-native-toast-message';
 import ListItemNote from './ListItemNote';
 import GridItemNote from './GridItemNote';
-import Switch from './Switch';
-import SearchBar from './SearchBar';
-import TagsList from './TagsList';
+import Switch from '../../../../components/Switch';
+import SearchBar from '../../../../components/SearchBar';
+import TagsList from '../../../../components/TagsList';
+import colors from '../../../../styles/colors';
 
 type Item = {
   id: number | undefined;
@@ -19,8 +20,6 @@ type Item = {
 };
 
 type ItemProps = {
-  dataNotes: Item[];
-  dataTags: string[];
   tag: string;
   filter: string;
   submitNote: (item: {search: string}) => Promise<void>;
@@ -30,42 +29,41 @@ type ItemProps = {
 const switchOptions = ['Grid', 'List'];
 
 export default function NotesList({
-  dataNotes,
-  dataTags,
   tag,
   filter,
   onPressTag,
   submitNote,
 }: ItemProps) {
   const [switchValue, setSwitchValue] = useState<string>('Grid');
-  const [filteredData, setFilteredData] = useState<ItemProps>(dataNotes);
+  const {data, isLoading} = useGetNotes();
+  const [filteredData, setFilteredData] = useState<ItemProps>(data);
   const queryClient = useQueryClient();
   const removeNote = useRemoveNote();
 
   useEffect(() => {
     updateData();
-  }, [tag, filter, dataNotes]);
+  }, [tag, filter, data]);
 
   const updateData = () => {
     if (tag === 'All') {
-      let updatedData = dataNotes;
+      let updatedData = data;
       if (filter) {
         updatedData = updatedData?.filter(item => {
-          if (item.title.includes(filter)) {
+          if (item.title.toLowerCase().includes(filter.toLowerCase())) {
             return item;
-          } else if (item.text.includes(filter)) {
+          } else if (item.text.toLowerCase().includes(filter.toLowerCase())) {
             return item;
           }
         });
       }
       setFilteredData(updatedData);
     } else {
-      let updatedData = dataNotes?.filter(item => item.tag === tag);
+      let updatedData = data?.filter(item => item.tag === tag);
       if (filter) {
         updatedData = updatedData?.filter(item => {
-          if (item.title.includes(filter)) {
+          if (item.title.toLowerCase().includes(filter.toLowerCase())) {
             return item;
-          } else if (item.text.includes(filter)) {
+          } else if (item.text.toLowerCase().includes(filter.toLowerCase())) {
             return item;
           }
         });
@@ -76,7 +74,7 @@ export default function NotesList({
 
   const deleteItem = async (id: number) => {
     removeNote.mutate(
-      {id, notes: dataNotes},
+      {id},
       {
         onSuccess: response => {
           Toast.show({
@@ -95,10 +93,18 @@ export default function NotesList({
 
   return (
     <View style={styles.container}>
-      {!!filteredData?.length && (
+      {!!data?.length && !filteredData?.length && (
+        <View style={styles.ph16}>
+          <Text style={[styles.textNoData]}>
+            Hey, looks like you already have notes but can't see anything, try
+            changing your filters!!!
+          </Text>
+        </View>
+      )}
+      {!!data?.length && (
         <>
           <SearchBar submit={submitNote} />
-          <TagsList data={dataTags} onPress={onPressTag} value={tag} />
+          <TagsList onPress={onPressTag} value={tag} />
           <Switch
             options={switchOptions}
             currentValue={switchValue}
@@ -106,14 +112,13 @@ export default function NotesList({
           />
         </>
       )}
-      {!filteredData?.length ? (
+      {isLoading ? (
+        <ActivityIndicator color={colors.PRIMARY} />
+      ) : !data?.length ? (
         <View style={styles.ph16}>
           <Text style={styles.textNoData}>
-            Oh no! It looks like you don't have any notes yet, click "Add new
-            note +" to create a brand new one!
-          </Text>
-          <Text style={[styles.textNoData, styles.mt24]}>
-            If you already have notes, try changing your filters!!!
+            Oh no! It looks like you don't have any notes yet, click on bottom
+            button "+" to create a brand new one!
           </Text>
         </View>
       ) : switchValue === 'Grid' ? (
