@@ -96,10 +96,14 @@ export default function Header({showModal, setShowModal}) {
   return (
     <View style={styles.container}>
       <View style={styles.avatarView}>
-        <Image
-          source={{uri: userLogged.data.user_avatar}}
-          style={styles.avatar}
-        />
+        {userLogged.data?.user_avatar ? (
+          <Image
+            source={{uri: userLogged.data.user_avatar}}
+            style={styles.avatar}
+          />
+        ) : (
+          <View style={styles.avatar} />
+        )}
         <View style={styles.tag}>
           <Text style={styles.title}>{userLogged.data.name}</Text>
         </View>
@@ -241,7 +245,7 @@ const styles = StyleSheet.create({
   avatar: {
     width: width / 2,
     height: width / 2,
-    borderRadius: 100,
+    borderRadius: 200,
     marginBottom: 24,
     borderColor: colors.SECONDARY,
     backgroundColor: colors.GRAY_LIGHT,

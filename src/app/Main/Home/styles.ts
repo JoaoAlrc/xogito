@@ -1,4 +1,4 @@
-import {StyleSheet, Dimensions} from 'react-native';
+import {StyleSheet, Dimensions, Platform} from 'react-native';
 import colors from '../../../styles/colors';
 const {width, height} = Dimensions.get('screen');
 
@@ -12,6 +12,7 @@ export const styles = StyleSheet.create({
     position: 'absolute',
     bottom: 16,
     right: 16,
+    paddingBottom: Platform.OS === 'android' ? 70 : 0,
   },
   addButton: {
     backgroundColor: colors.BUTTON,

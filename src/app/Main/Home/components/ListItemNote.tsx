@@ -87,6 +87,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     marginVertical: 24,
+    maxWidth: '48%',
   },
   containerItem: {
     justifyContent: 'space-between',

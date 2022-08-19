@@ -34,6 +34,7 @@ export default function Home({navigation}) {
         queryClient.cancelQueries('users');
         queryClient.setQueryData('users', response);
         queryClient.invalidateQueries('users');
+        setShowModalOptions(false);
         return navigation.navigate('SignIn');
       },
       onError: () => {},

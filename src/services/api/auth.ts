@@ -39,14 +39,15 @@ type ManageUserProps = {
   users: User[];
 };
 
-type User = {
+export type User = {
   id: number | undefined;
   name: string;
+  user_avatar: string;
   notes: Note[];
   firstAccess: boolean;
 };
 
-type Note = {
+export type Note = {
   id: number | undefined;
   tag: string;
   title: string;
@@ -65,7 +66,7 @@ export const useManageUser = (): UseMutationResult<
     async ({user, users}: ManageUserProps) => {
       const hasUser = users?.findIndex(item => item.id === user.id);
       const response = users || [];
-      if (hasUser) {
+      if (hasUser > -1) {
         response[hasUser] = user;
       } else {
         response.push(user);

@@ -9,17 +9,17 @@ import styles from './styles';
 type Props = {
   loading?: boolean;
   control: Control<any, object>;
-  login: (dataForm: {name: string; user_avatar: string}) => void;
+  createUser: (dataForm: {name: string; user_avatar: string}) => void;
 };
 
 const required = {
   required: {
     value: true,
-    message: "Your username it's required to save your notes.",
+    message: 'Your username and photo are required to save your notes.',
   },
 };
 
-export default function Form({login, control, loading}: Props) {
+export default function Form({createUser, control, loading}: Props) {
   return (
     <>
       <View style={styles.avatarView}>
@@ -32,7 +32,7 @@ export default function Form({login, control, loading}: Props) {
           placeholder="Username"
           rules={required}
         />
-        <TouchableOpacity onPress={login} style={styles.button}>
+        <TouchableOpacity onPress={createUser} style={styles.button}>
           {loading ? (
             <ActivityIndicator color={colors.WHITE} />
           ) : (

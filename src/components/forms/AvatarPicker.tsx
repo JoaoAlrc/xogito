@@ -91,7 +91,7 @@ const styles = StyleSheet.create({
   avatar: {
     width: width / 1.8,
     height: width / 1.8,
-    borderRadius: 100,
+    borderRadius: 200,
     marginBottom: 24,
     borderColor: colors.SECONDARY,
     borderWidth: 8,
@@ -103,7 +103,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.GRAY_LIGHT,
     alignItems: 'center',
     justifyContent: 'center',
-    borderRadius: 100,
+    borderRadius: 200,
     borderWidth: 8,
     marginBottom: 24,
     padding: 4,
