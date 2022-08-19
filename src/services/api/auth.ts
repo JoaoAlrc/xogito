@@ -40,7 +40,7 @@ type ManageUserProps = {
 };
 
 export type User = {
-  id: number | undefined;
+  id: string | undefined;
   name: string;
   user_avatar: string;
   notes: Note[];
@@ -48,7 +48,7 @@ export type User = {
 };
 
 export type Note = {
-  id: number | undefined;
+  id: string | undefined;
   tag: string;
   title: string;
   text: string;

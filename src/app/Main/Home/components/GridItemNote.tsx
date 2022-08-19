@@ -16,7 +16,7 @@ import colors from '../../../../styles/colors';
 const {width} = Dimensions.get('screen');
 
 type Item = {
-  id: number | undefined;
+  id: string | undefined;
   tag: string;
   title: string;
   text: string;
@@ -27,7 +27,7 @@ type Item = {
 type Props = {
   data: Item[];
   isLoading: boolean;
-  deleteItem: (id: number) => Promise<void>;
+  deleteItem: (id: string) => Promise<void>;
 };
 
 export default function GridItemNote({data, isLoading, deleteItem}: Props) {

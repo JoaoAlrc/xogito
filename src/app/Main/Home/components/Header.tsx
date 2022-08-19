@@ -23,7 +23,7 @@ import {useGetUserLogged} from '../../../../services/api/auth';
 const {width} = Dimensions.get('screen');
 
 type NoteForm = {
-  id: number | undefined;
+  id: string | undefined;
   tag: string;
   title: string;
   text: string;
@@ -61,15 +61,12 @@ export default function Header({showModal, setShowModal}) {
     },
   });
   const queryClient = useQueryClient();
-  const {data} = useGetNotes();
   const userLogged = useGetUserLogged();
   const createNote = useCreateNote();
 
   const submit = async (dataForm: NoteForm) => {
-    const id = !data || data[0] === '' ? 1 : data.length + 1;
-
     const note = Object.assign(dataForm, {
-      id,
+      id: JSON.stringify(moment()),
       date_of_creation: moment(),
     });
 

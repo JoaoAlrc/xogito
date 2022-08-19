@@ -13,6 +13,7 @@ import {RoutesNavigation} from '../../../services/routes';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {useQueryClient} from 'react-query';
 import UsersList from './components/UsersList';
+import moment from 'moment';
 
 type Props = NativeStackScreenProps<RoutesNavigation, 'SignIn'>;
 type UserForm = {name: string; user_avatar: string};
@@ -30,10 +31,8 @@ export default function SignIn({navigation}: Props) {
   const logIn = useLogIn();
 
   const createUser = (dataForm: UserForm) => {
-    const id = !getUsers.data?.length ? 1 : getUsers.data.length + 1;
-
     const user = Object.assign(dataForm, {
-      id,
+      id: JSON.stringify(moment()),
       name: dataForm.name,
       user_avatar: dataForm.user_avatar,
       notes: [],

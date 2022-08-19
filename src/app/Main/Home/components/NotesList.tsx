@@ -11,7 +11,7 @@ import TagsList from '../../../../components/TagsList';
 import colors from '../../../../styles/colors';
 
 type Item = {
-  id: number | undefined;
+  id: string | undefined;
   tag: string;
   title: string;
   text: string;
@@ -72,7 +72,7 @@ export default function NotesList({
     }
   };
 
-  const deleteItem = async (id: number) => {
+  const deleteItem = async (id: string) => {
     removeNote.mutate(
       {id},
       {

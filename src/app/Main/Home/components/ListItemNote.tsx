@@ -12,7 +12,7 @@ import DeleteModal from '../../../../components/DeleteModal';
 import colors from '../../../../styles/colors';
 
 type Item = {
-  id: number | undefined;
+  id: string | undefined;
   tag: string;
   title: string;
   text: string;
@@ -23,7 +23,7 @@ type Item = {
 type Props = {
   data: Item[];
   isLoading: boolean;
-  deleteItem: (id: number) => Promise<void>;
+  deleteItem: (id: string) => Promise<void>;
 };
 
 export default function ListItemNote({data, isLoading, deleteItem}: Props) {

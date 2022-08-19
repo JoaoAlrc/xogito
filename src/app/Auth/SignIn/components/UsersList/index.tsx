@@ -22,6 +22,7 @@ export default function UsersList({login, data}: Props) {
         <ScrollView horizontal showsHorizontalScrollIndicator={false}>
           {data?.map((item, idx) => (
             <TouchableOpacity
+              key={idx}
               onPress={() => login(item)}
               style={[styles.button, !idx ? styles.mh16 : styles.mr16]}>
               <Image source={{uri: item.user_avatar}} style={styles.avatar} />

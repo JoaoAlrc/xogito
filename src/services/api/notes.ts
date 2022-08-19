@@ -24,7 +24,7 @@ type CreateNoteProps = {
   note: Note;
 };
 type Note = {
-  id: number | undefined;
+  id: string | undefined;
   tag: string;
   title: string;
   text: string;
@@ -56,7 +56,7 @@ export const useCreateNote = (): UseMutationResult<
 /* --------------------------------------- REMOVE NOTE --------------------------------------- */
 
 type RemoveNoteProps = {
-  id: number;
+  id: string;
 };
 
 // React Mutation Hook to Remove the Note
@@ -73,7 +73,7 @@ export const useRemoveNote = (): UseMutationResult<
 
       await AsyncStorage.setItem('user-logged', JSON.stringify(userParsed));
 
-      return userParsed;
+      return userParsed.notes;
     },
     {mutationKey: REMOVE_NOTE_KEY},
   );
